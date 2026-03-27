@@ -1,6 +1,6 @@
 "use client";
 
-import { useNoteDraft } from "@/lib/store/NoteStore";
+import { useNoteDraft } from "@/lib/store/noteStore";
 import css from "./NoteForm.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NoteFilter } from "@/types/note";
