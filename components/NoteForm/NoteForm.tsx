@@ -1,11 +1,11 @@
 "use client";
 
-import { useNoteDraft } from "@/lib/store/noteStore";
 import css from "./NoteForm.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { NoteFilter } from "@/types/note";
 import { createNote } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { useNoteDraft } from "@/lib/store/noteStore";
 
 export default function NoteForm() {
   const { noteData, setNoteData, clearNoteData } = useNoteDraft();
@@ -14,6 +14,8 @@ export default function NoteForm() {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+      clearNoteData();
+      router.push("/notes/filter/all");
     },
   });
 
@@ -21,8 +23,6 @@ export default function NoteForm() {
 
   const handleSubmit = () => {
     mutate({ ...noteData });
-    clearNoteData();
-    router.push("/notes/filter/all");
   };
 
   const onChangeData = (
@@ -59,7 +59,12 @@ export default function NoteForm() {
 
       <label className={css.formGroup}>
         Tag
-        <select onChange={onChangeData} className={css.select} name="tag">
+        <select
+          onChange={onChangeData}
+          className={css.select}
+          name="tag"
+          value={noteData.tag}
+        >
           <option value={NoteFilter.Todo}>Todo</option>
           <option value={NoteFilter.Work}>Work</option>
           <option value={NoteFilter.Personal}>Personal</option>
@@ -69,7 +74,11 @@ export default function NoteForm() {
       </label>
 
       <div className={css.actions}>
-        <button className={css.cancelButton} type="button">
+        <button
+          className={css.cancelButton}
+          type="button"
+          onClick={() => router.back()}
+        >
           Cancel
         </button>
         <button className={css.submitButton} type="submit">
