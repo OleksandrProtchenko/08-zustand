@@ -63,7 +63,7 @@ export default function NoteForm() {
           onChange={onChangeData}
           className={css.select}
           name="tag"
-          value={noteData.tag}
+          defaultValue={noteData.tag}
         >
           <option value={NoteFilter.Todo}>Todo</option>
           <option value={NoteFilter.Work}>Work</option>
